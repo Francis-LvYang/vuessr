@@ -19,17 +19,22 @@ module.exports = {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: { color: '#64B888' },
 
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['~/assets/styles/main.less'],
 
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [
+    {
+      src: '~/plugins/iview',
+      ssr: true
+    }
+  ],
 
   /*
    ** Nuxt.js modules
@@ -53,7 +58,21 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
+    loaders: {
+      less: {
+        javascriptEnabled: true
+      }
+    },
     extend(config, ctx) {
+      config.module.rules.push({
+        enforce: 'pre',
+        test: /\.vue$/,
+        loader: 'iview-loader',
+        options: {
+          prefix: true
+        },
+        exclude: /(node_modules)/
+      })
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
@@ -64,5 +83,13 @@ module.exports = {
         })
       }
     }
+  },
+  manifest: {
+    name: 'Auther',
+    short_anme: 'Auther',
+    display: 'standalone',
+    background_color: '#f3f3f3',
+    theme_color: '#64B888',
+    description: 'A blog ssr system'
   }
 }
