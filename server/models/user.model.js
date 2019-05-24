@@ -56,7 +56,17 @@ const UserSchema = new mongoose.Schema(
         type: Schema.Types.ObjectId,
         ref: 'User'
       }
-    ]
+    ],
+    meta: {
+      createAt: {
+        type: Date,
+        default: Date.now()
+      },
+      updateAt: {
+        type: Date,
+        default: Date.now()
+      }
+    }
   },
   {
     timestamps: {
@@ -81,9 +91,9 @@ const UserSchema = new mongoose.Schema(
 UserSchema.pre('save', function(next) {
   const user = this
   if (this.isNew) {
-    this.createAt = this.updateAt = Date.now()
+    this.timestamps.createAt = this.timestamps.updateAt = Date.now()
   } else {
-    this.updateAt = Date.now()
+    this.timestamps.updateAt = Date.now()
   }
   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
     if (err) return next(err)
@@ -101,6 +111,14 @@ UserSchema.methods = {
       if (err) return cb(err)
       cb(null, isMatch)
     })
+  }
+}
+// 静态方法
+UserSchema.statics = {
+  fetch: function(cb) {
+    return this.find({})
+      .sort('meta.updateAt')
+      .exec(cb)
   }
 }
 mongoose.model('User', UserSchema)
