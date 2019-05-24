@@ -1,59 +1,65 @@
-const pkg = require('./package')
+const globalConfig = require('./server/config/global.config')
+
+// 全局域名
+process.env.DOMAIN = globalConfig.app.domain
 
 module.exports = {
-  mode: 'spa',
-
-  /*
-   ** Headers of the page
-   */
+  mode: 'universal',
   head: {
-    title: pkg.name,
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      {
+        charset: 'utf-8'
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1'
+      },
+      {
+        name: 'renderer',
+        content: 'webkit'
+      }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: '/favicon.ico'
+      },
+      {
+        rel: 'alternate',
+        type: 'application/rss+xml',
+        title: 'RSS 2.0',
+        href: '/rss.xml'
+      }
+    ]
   },
-
-  /*
-   ** Customize the progress-bar color
-   */
-  loading: { color: '#64B888' },
-
-  /*
-   ** Global CSS
-   */
-  css: ['~/assets/styles/main.less'],
-
-  /*
-   ** Plugins to load before mounting the App
-   */
+  loading: {
+    color: '#64B868'
+  },
+  css: ['~/assets/styles/min.less'],
   plugins: [
     {
       src: '~/plugins/iview',
       ssr: true
+    },
+    {
+      src: '~/plugins/components',
+      ssr: true
+    },
+    {
+      ssc: '~/plugins/filters',
+      ssr: true
     }
   ],
-
-  /*
-   ** Nuxt.js modules
-   */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-125551361-1'
+      }
+    ]
   ],
-  /*
-   ** Axios module configuration
-   */
-  axios: {
-    // See https://github.com/nuxt-community/axios-module#options
-  },
-
-  /*
-   ** Build configuration
-   */
   build: {
     /*
      ** You can extend webpack config here
@@ -73,9 +79,9 @@ module.exports = {
         },
         exclude: /(node_modules)/
       })
-      // Run ESLint on save
+      //  Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
-        config.module.rules.push({
+        config.module.rule.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
@@ -85,11 +91,11 @@ module.exports = {
     }
   },
   manifest: {
-    name: 'Auther',
-    short_anme: 'Auther',
+    name: 'Auther Lyu',
+    short_name: 'Auther',
     display: 'standalone',
     background_color: '#f3f3f3',
     theme_color: '#64B888',
-    description: 'A blog ssr system'
+    description: 'A blog system'
   }
 }
