@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
 const globalConfig = require('../config/global.config')
 
-const { secret, expiresIn, algorithm } = globalConfig.jwt
-
+const { secret, expiresIn, algorithm, psecret } = globalConfig.jwt
+// token签名
 exports.sign = user => {
   const token = jwt.sign(
     {
@@ -13,13 +13,18 @@ exports.sign = user => {
     },
     secret,
     {
-      expiresIn
+      expiresIn,
+      algorithm: algorithm
     }
   )
   return token
 }
 // 验证token
 exports.verify = token => {
-  const decoded = jwt.verify(token, secret)
-  return decoded
+  try {
+    const decoded = jwt.verify(token, psecret, { algorithm: algorithm }) || {}
+    return decoded
+  } catch (error) {
+    return error
+  }
 }

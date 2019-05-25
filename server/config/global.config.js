@@ -1,3 +1,11 @@
+const fs = require('fs')
+const path = require('path')
+const privatecert = fs.readFileSync(
+  path.join(__dirname, '../../assets/public/rsa_private_key1024.pem')
+)
+const publiccert = fs.readFileSync(
+  path.join(__dirname, '../../assets/public/rsa_public_key.pem')
+)
 const isPro = process.env.NODE_ENV === 'production'
 
 module.exports = {
@@ -18,8 +26,9 @@ module.exports = {
     email: 'qq22337383@gmail.com'
   },
   jwt: {
-    expiresIn: 1 * 600,
-    secret: 'auther@123',
+    expiresIn: 3600000,
+    secret: privatecert,
+    psecret: publiccert,
     algorithm: 'RS256'
   },
   seo: {
