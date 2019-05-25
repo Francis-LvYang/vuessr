@@ -124,3 +124,53 @@ exports.login = async (req, res, next) => {
     })
   }
 }
+// 登出逻辑controller
+exports.logout = (req, res) => {
+  res.clearCookie('token')
+  res.json({
+    code: 200,
+    data: {}
+  })
+}
+// 获取用户controller
+exports.getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find({}).exec()
+    res.json({
+      code: 200,
+      data: users
+    })
+  } catch (error) {
+    res.json({
+      code: 200,
+      data: '获取用户列表失败',
+      error
+    })
+  }
+}
+// 获取用户信息
+exports.getUserInfo = async (req, res, next) => {
+  const state = {
+    1: req.params.id || '',
+    2: res.locals.user ? res.locals.user.userId : ''
+  }
+  const userId = state[1] || state[2]
+
+  try {
+    const user = await User.findOne({
+      _id: userId
+    })
+      .select('-createdAt -updatedAt')
+      .exec()
+    res.json({
+      code: 200,
+      data: user
+    })
+  } catch (error) {
+    res.json({
+      code: 404,
+      data: '信息获取失败',
+      error
+    })
+  }
+}
