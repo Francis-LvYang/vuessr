@@ -44,6 +44,7 @@
   </div>
 </template>
 <script>
+import { mapState, mapActions, mapMutation } from 'vuex'
 import { verifyPassword, verifyEmail } from '~/assets/libs/validate'
 
 export default {
@@ -69,6 +70,9 @@ export default {
         }
       }
     }
+  },
+  computed: {
+    ...mapState('global', ['siteName'])
   },
   methods: {
     login() {
