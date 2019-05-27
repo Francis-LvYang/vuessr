@@ -1,5 +1,3 @@
-const mongoose = require('mongoose')
-const User = mongoose.model('User')
 const token = require('../utils/token.util')
 
 exports.auth = (name,
@@ -38,4 +36,47 @@ exports.filter = name => (req, res, next) => {
       res.locals.user = {}
     }
   }
+}
+// 检查请求该接口的用户角色
+exports.role = roleName => (req, res, next) => {
+  const { role } = req.locals.user
+  if (role !== roleName) {
+    res.status(403).json({
+      code: 403,
+      data: '没有权限'
+    })
+  }
+  next()
+}
+
+// array or string
+exports.query = field => (req, res, next) => {
+  const hasParam =
+    typeof field === 'string'
+      ? !!req.query[field]
+      : field.every(item => !!req.query[item])
+  if (!hasParam) {
+    const fields = typeof field === 'string' ? [field] : field
+    res.json({
+      code: 200,
+      data: `${fields.json('、')} 是必填字段`
+    })
+  }
+  next()
+}
+
+// array or string
+exports.formData = field => (req, res, next) => {
+  const hasParam =
+    typeof field === 'string'
+      ? !!req.body[field]
+      : field.every(item => !!req.body[item])
+  if (!hasParam) {
+    const fields = typeof field === 'string' ? [field] : field
+    res.json({
+      code: 200,
+      data: `${fields.json('、')}是必填字段`
+    })
+  }
+  next()
 }
