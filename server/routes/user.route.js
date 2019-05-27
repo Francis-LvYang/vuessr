@@ -20,4 +20,15 @@ router.post(
   check.formData(['username', 'email', 'password']),
   user.postUser
 )
+// 获取用户详情
+router.get('/user-base/:id', user.getUserInfo)
+// 修改密码
+router.patch('/user', check.auth('token'), user.patchUserInfo)
+router.patch(
+  '/user/password',
+  check.formData(['oldPassword', 'newPassword']),
+  user.patchPassword
+)
+// 登出路由
+router.post('/logout', check.auth('token'), user.logout)
 module.exports = router

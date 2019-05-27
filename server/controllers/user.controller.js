@@ -174,3 +174,62 @@ exports.getUserInfo = async (req, res, next) => {
     })
   }
 }
+// 更改用户信息
+exports.patchUserInfo = async (req, res, next) => {
+  const { body } = req
+  const { userId } = res.locals.user
+  try {
+    const bodyData = await User.findOneAndUpdate(
+      {
+        _id: userId
+      },
+      body
+    ).exec()
+    res.json({
+      code: 200,
+      data: bodyData
+    })
+  } catch (error) {
+    res.json({
+      code: 400,
+      data: '信息修改失败',
+      error
+    })
+  }
+}
+// 用户密码修改
+exports.patchPassword = async (req, res, next) => {
+  const { oldPassword, newPassword } = req.body
+  const { userId } = res.locals.user
+  const realOldPassword = md5(oldPassword)
+  try {
+    const user = await User.findOne({
+      _id: userId
+    }).exec()
+    if (user && user.password !== realOldPassword) {
+      res.json({
+        code: 400,
+        data: '原始密码错误'
+      })
+    }
+    await User.findOneAndUpdate(
+      {
+        _id: userId
+      },
+      {
+        password: newPassword
+      }
+    ).exec()
+    res.clearCookie('token')
+    res.json({
+      code: 200,
+      data: {}
+    })
+  } catch (error) {
+    res.json({
+      code: 404,
+      data: '密码修改失败',
+      error
+    })
+  }
+}

@@ -29,6 +29,7 @@
     "babel-jest": "^24.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "eslint": "^5.15.1",
@@ -53,11 +54,13 @@
     "lodash": "^4.17.11",
     "markdown-it": "^8.4.2",
     "md5": "^2.2.1",
+    "mocha": "^6.1.4",
     "mongoose": "^5.5.11",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.0",
     "prettier": "^1.16.4",
     "require-all": "^3.0.0",
+    "supertest": "^4.0.2",
     "svg-captcha": "^1.4.0",
     "vue-jest": "^3.0.3"
   }
