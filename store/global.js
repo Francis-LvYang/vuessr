@@ -12,6 +12,20 @@ export const mutations = {
 }
 export const actions = {
   async getSystemConfig({ commit }) {
-
+    const { data } = await ajax.get('/system-config')
+    commit('setConfig', data)
   }
 }
+
+export const state = () => ({
+  domain: process.env.DOMAIN,
+  siteName: '',
+  seo: {
+    title: '',
+    keywords: '',
+    description: ''
+  },
+  isConfigEmail: false,
+  isConfigGithub: false,
+  token: ''
+})

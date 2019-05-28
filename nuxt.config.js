@@ -1,6 +1,6 @@
 const globalConfig = require('./server/config/global.config')
 
-// 全局域名
+// 全局域名赋值
 process.env.DOMAIN = globalConfig.app.domain
 
 module.exports = {

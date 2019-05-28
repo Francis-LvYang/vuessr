@@ -1,11 +1,11 @@
-const fs = require('fs')
-const path = require('path')
-const privatecert = fs.readFileSync(
-  path.join(__dirname, '../../assets/public/rsa_private_key1024.pem')
-)
-const publiccert = fs.readFileSync(
-  path.join(__dirname, '../../assets/public/rsa_public_key.pem')
-)
+// const fs = require('fs')
+// const path = require('path')
+// const privatecert = fs.readFileSync(
+//   path.join(__dirname, '../../assets/public/rsa_private_key1024.pem')
+// )
+// const publiccert = fs.readFileSync(
+//   path.join(__dirname, '../../assets/public/rsa_public_key.pem')
+// )
 const isPro = process.env.NODE_ENV === 'production'
 
 module.exports = {
@@ -27,8 +27,8 @@ module.exports = {
   },
   jwt: {
     expiresIn: 3600000,
-    secret: privatecert,
-    psecret: publiccert,
+    secret: '../../assets/public/rsa_private_key1024.pem',
+    psecret: '../../assets/public/rsa_public_key.pem',
     algorithm: 'RS256'
   },
   seo: {

@@ -7,8 +7,8 @@ const token = require('../utils/token.util')
 
 const User = mongoose.model('User')
 // 验证码controller
-exports.getcode = (req, res, next) => {
-  const code = svgCaprcha.create({
+exports.getcode = async (req, res, next) => {
+  const code = await svgCaprcha.create({
     size: 5,
     ignoreChars: '0o1i',
     noise: 2,
