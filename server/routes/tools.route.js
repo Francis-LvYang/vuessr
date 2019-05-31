@@ -5,4 +5,6 @@ const upload = require('../controllers/tools/upload.controller')
 const github = require('../controllers/tools/github.controller')
 const backup = require('../controllers/tools/backup.controller')
 
-router.get('/system', check.auth('token'), system.system)
+router
+  .get('/system', check.auth('token'), check.role('superAdmin'), system.system)
+  .get('/system-config', system.globalConfig)

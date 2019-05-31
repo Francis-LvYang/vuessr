@@ -19,7 +19,10 @@ exports.img = async (req, res, next) => {
         // 获取文件后缀名
         const extname = Date.now() + path.extname(filename)
         const oldUrl = lastItem.path
-        const newUrl = path.join(path.resolve(__dirname, '../../public/picture/'), extname)
+        const newUrl = path.join(
+          path.resolve(__dirname, '../../public/picture/'),
+          extname
+        )
         // 文件重命名，上传到服务器
         const readStream = fs.createReadStream(oldUrl)
         const writeStream = fs.createWriteStream(newUrl)
@@ -46,8 +49,43 @@ exports.file = async (req, res, next) => {
         const lastItem = files[filename]
         let extname = lastItem.name
         const data = await Medium.find({ filename: lastItem.name }).exec()
-
+        if (data && data.length) {
+          // 文件重名
+          extname = `${lastItem.name.split('.')[0]}_${Date.now()}${path.extname(
+            extname
+          )}`
+        }
+        const oldUrl = lastItem.path
+        const newUrl = path.join(
+          path.resolve(__dirname, '../../../public/medium/'),
+          extname
+        )
+        // 文件重名名，上传到服务器
+        const readStream = fs.createReadStream(oldUrl)
+        const writeStream = fs.createWriteStream(newUrl)
+        readStream.pipe(writeStream)
+        resolve({
+          category: fields.category,
+          type: lastItem.type.split('/')[1],
+          filename: extname,
+          size: Math.ceil(lastItem.size / 1024)
+        })
       })
     })
   }
+  await getFileUrl(req, res).then(async ret => {
+    try {
+      const { data } = await new Medium(ret).save()
+      res.json({
+        code: 200,
+        data
+      })
+    } catch (error) {
+      res.json({
+        code: 500,
+        data: '上传失败',
+        error
+      })
+    }
+  })
 }

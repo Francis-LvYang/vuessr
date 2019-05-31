@@ -42,22 +42,22 @@ const ArticleSchema = new Schema(
       default: 0
     },
     user: {
-      type: Schema.Types.ObjectId,
+      type: Schema.ObjectId,
       ref: 'User'
     },
     category: {
-      type: Schema.Type.ObjectId,
+      type: Schema.ObjectId,
       ref: 'Category'
     },
-    likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    media: [{ type: Schema.Types.ObjectId, ref: 'Media' }],
+    likes: [{ type: Schema.ObjectId, ref: 'User' }],
+    media: [{ type: Schema.ObjectId, ref: 'Media' }],
     extends: [
       {
         name: { type: String, require: true },
         value: { type: Schema.Types.Mixed, default: '' }
       }
     ],
-    tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }]
+    tags: [{ type: Schema.ObjectId, ref: 'Tag' }]
   },
   {
     timestamps: {
