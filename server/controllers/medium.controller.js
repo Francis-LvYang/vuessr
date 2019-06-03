@@ -140,41 +140,37 @@ exports.postMediumCategory = async (req, res, next) => {
 }
 
 exports.patchMediumCategory = async (req, res, next) => {
-  const {
-    id,
-  } = req.params
+  const { id } = req.params
   let { body } = req
   try {
     body = await Category.findByIdAndUpdate(id, body).exec()
     res.json({
       success: true,
-      data: body,
+      data: body
     })
   } catch (error) {
     res.json({
       success: false,
       message: '媒体库分类更新失败',
-      error,
+      error
     })
   }
 }
 
 exports.deleteMediumCategory = async (req, res, next) => {
-  const {
-    id,
-  } = req.params
+  const { id } = req.params
 
   try {
     const body = await Category.findByIdAndRemove(id).exec()
     res.json({
       success: true,
-      data: body,
+      data: body
     })
   } catch (error) {
     res.json({
       success: false,
       message: '媒体库删除失败',
-      error,
+      error
     })
   }
 }
